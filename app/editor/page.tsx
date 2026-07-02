@@ -1386,6 +1386,7 @@ const DraggableRetentionGraph = ({ data, onChange, locked, videoDuration }: { da
 }
 
 const TABS = ["Overview", "Engagement", "Audience"] as const
+const DEFAULT_HEADER_IMAGE = "/header.jpg"
 
 export default function ReelInsights() {
     const { data: insightsData, saveData, isLoaded } = useInsightsStorage()
