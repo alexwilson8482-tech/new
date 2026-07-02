@@ -1908,48 +1908,53 @@ export default function ReelInsights() {
         <div className="w-full max-w-[420px]">
 
                     {/* Header Image */}
-                    <header
-            className="fixed top-0 z-50 w-full max-w-[420px]"
-            style={{ backgroundColor: BG }}
+<header
+  className="fixed top-0 z-50 w-full max-w-[420px]"
+  style={{ backgroundColor: BG }}
+>
+  <div
+    className="relative h-[48px] w-full overflow-hidden bg-zinc-900"
+    onClick={() => { if (!locked && !DEFAULT_HEADER_IMAGE) headerInputRef.current?.click() }}
+    style={{ cursor: !locked && !DEFAULT_HEADER_IMAGE ? "pointer" : "default" }}
+  >
+    {DEFAULT_HEADER_IMAGE ? (
+      // Default image from code - always shown
+      <img src={DEFAULT_HEADER_IMAGE} alt="Header" className="w-full h-full object-cover" />
+    ) : headerImage ? (
+      // User uploaded image
+      <>
+        <img src={headerImage} alt="Header" className="w-full h-full object-cover" />
+        {!locked && (
+          <button
+            className="absolute top-1.5 right-2 p-1 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
+            onClick={e => {
+              e.stopPropagation()
+              setHeaderImage(null)
+              try { localStorage.removeItem("header-image") } catch {}
+            }}
           >
-
-            <div
-              className="relative h-[48px] w-full overflow-hidden cursor-pointer group bg-zinc-900"
-              onClick={() => { if (!locked) headerInputRef.current?.click() }}
-            >
-              {headerImage ? (
-                <>
-                  <img src={headerImage} alt="Header" className="w-full h-full object-cover" />
-                  {!locked && (
-                    <button
-                      className="absolute top-1.5 right-2 p-1 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                      onClick={e => {
-                        e.stopPropagation()
-                        setHeaderImage(null)
-                        try { localStorage.removeItem("header-image") } catch {}
-                      }}
-                    >
-                      <CloseIcon />
-                    </button>
-                  )}
-                </>
-              ) : (
-                <div className="flex items-center justify-center h-full text-zinc-500 hover:text-zinc-300 transition-colors">
-                  <div className="flex items-center gap-2">
-                    <UploadIcon />
-                    <span className="text-[11px] font-medium">Upload header image</span>
-                  </div>
-                </div>
-              )}
-              <input
-                ref={headerInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleHeaderUpload}
-              />
-            </div>
-          </header>
+            <CloseIcon />
+          </button>
+        )}
+      </>
+    ) : (
+      // Upload prompt (only when no default image is set)
+      <div className="flex items-center justify-center h-full text-zinc-500 hover:text-zinc-300 transition-colors group">
+        <div className="flex items-center gap-2">
+          <UploadIcon />
+          <span className="text-[11px] font-medium">Upload header image</span>
+        </div>
+      </div>
+    )}
+    <input
+      ref={headerInputRef}
+      type="file"
+      accept="image/*"
+      className="hidden"
+      onChange={handleHeaderUpload}
+    />
+  </div>
+</header>
 
 
                     {/* Header Spacer */}
